@@ -1,5 +1,3 @@
-// Class to make a Post from Processing
-// Based on "PostData" library by Chris Allick, http://chrisallick.com/
 package httprocessing;
 import java.io.StringWriter;
 
