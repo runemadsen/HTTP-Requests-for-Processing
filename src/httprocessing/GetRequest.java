@@ -1,6 +1,9 @@
 // Class to make a Post from Processing
 // Based on "PostData" library by Chris Allick, http://chrisallick.com/
 package httprocessing;
+import java.io.StringWriter;
+
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -10,6 +13,8 @@ import org.apache.http.util.EntityUtils;
 public class GetRequest
 {
 	String url;
+	String content;
+	HttpResponse response;
 
 	public GetRequest(String url) 
 	{
@@ -23,20 +28,36 @@ public class GetRequest
 
 			HttpGet httpGet = new HttpGet(url);
 
-			System.out.println( "executing request: " + httpGet.getRequestLine() );
-			HttpResponse response = httpClient.execute( httpGet );
-			HttpEntity   entity   = response.getEntity();
-
-			//System.out.println("----------------------------------------");
-			System.out.println( response.getStatusLine() );
-			//System.out.println("----------------------------------------");
-
-			if( entity != null ) entity.writeTo( System.out );
+			response = httpClient.execute( httpGet );
+			HttpEntity entity = response.getEntity();
+			this.content = EntityUtils.toString(response.getEntity());
+			
 			if( entity != null ) EntityUtils.consume(entity);
-
 			httpClient.getConnectionManager().shutdown();
+			
 		} catch( Exception e ) { 
 			e.printStackTrace(); 
+		}
+	}
+	
+	/* Getters
+	_____________________________________________________________ */
+	
+	public String getContent()
+	{
+		return this.content;
+	}
+	
+	public String getHeader(String name)
+	{
+		Header header = response.getFirstHeader(name);
+		if(header == null)
+		{
+			return "";
+		}
+		else
+		{
+			return header.getValue();
 		}
 	}
 }

@@ -3,6 +3,8 @@
 package httprocessing;
 
 import java.util.ArrayList;
+
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -15,6 +17,9 @@ public class PostRequest
 {
 	String url;
 	ArrayList<BasicNameValuePair> nameValuePairs;
+	
+	String content;
+	HttpResponse response;
 
 	public PostRequest(String url) 
 	{
@@ -37,15 +42,10 @@ public class PostRequest
 
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-			System.out.println( "executing request: " + httpPost.getRequestLine() );
-			HttpResponse response = httpClient.execute( httpPost );
+			response = httpClient.execute( httpPost );
 			HttpEntity   entity   = response.getEntity();
+			this.content = EntityUtils.toString(response.getEntity());
 
-			//System.out.println("----------------------------------------");
-			System.out.println( response.getStatusLine() );
-			//System.out.println("----------------------------------------");
-
-			if( entity != null ) entity.writeTo( System.out );
 			if( entity != null ) EntityUtils.consume(entity);
 
 			httpClient.getConnectionManager().shutdown();
@@ -55,6 +55,27 @@ public class PostRequest
 
 		} catch( Exception e ) { 
 			e.printStackTrace(); 
+		}
+	}
+	
+	/* Getters
+	_____________________________________________________________ */
+	
+	public String getContent()
+	{
+		return this.content;
+	}
+	
+	public String getHeader(String name)
+	{
+		Header header = response.getFirstHeader(name);
+		if(header == null)
+		{
+			return "";
+		}
+		else
+		{
+			return header.getValue();
 		}
 	}
 }
