@@ -47,6 +47,11 @@ public class PostRequest
 		nameFilePairs.put(name,f);
 	}
 
+	public void addFile(String name, String path) {
+		File f = new File(path);
+		nameFilePairs.put(name,f);
+	}
+	
 	public void send() 
 	{
 		try {
