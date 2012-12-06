@@ -7,9 +7,8 @@ HTTProcessing is based on code by [Chris Allick](http://chrisallick.com/) and [D
 
 Installation
 ------------
-First download [httprocessing.zip](https://github.com/downloads/runemadsen/HTTProcessing/httprocessing.zip)
 
-Unzip the files into the "code" folder of your Processing sketch
+Simply clone this git repository into your Processing "libraries" folder, or use the download link to download the files to the same directory.
 
 Then import the library in your sketch:
     
