@@ -5,6 +5,7 @@ HTTProcessing is a small library that takes the pain out of doing HTTP requests 
 
 HTTProcessing is based on code by [Chris Allick](http://chrisallick.com/) and [Daniel Shiffman](http://www.shiffman.net/).
 
+
 Installation
 ------------
 
@@ -26,3 +27,13 @@ Then you can make GET and POST requests from your code:
     post.send();
     println("Reponse Content: " + post.getContent());
     println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
+
+
+Building
+--------
+
+If you want to build the library (with javadocs, etc), run this from the git root folder:
+
+    ant
+
+That will generate the necessary JAR file into "libraries".
