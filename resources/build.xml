@@ -1,0 +1,205 @@
+<project name="ProcessingLibs" default="clean" basedir="../">
+
+	<property file="./resources/build.properties" />
+	
+	<description>
+		${ant.description}
+	</description>
+    	
+	<property name="line" value="------------------------------------------------------------------------------------------------" />
+	
+	<condition property="is.normal">
+		<equals arg1="${project.compile}" arg2="normal" />
+	</condition>
+	
+	<!-- set the OS properties -->
+	<condition property="is.mac">
+		<os family="mac" />
+	</condition>
+	<condition property="is.windows">
+		<os family="windows" />
+	</condition>
+	<condition property="is.unix">
+		<os family="unix" />
+	</condition>
+	
+	<property name="project.jar.name" value="${project.name}.jar"/>
+	<property name="project.src" location="src"/>
+	<property name="project.tmp" location="tmp"/>
+	<property name="project.lib" location="library"/>
+	<property name="project.bin" location="bin"/>
+	<property name="project.docs" location="docs"/>
+	<property name="libprops.source" location="resources/library.properties"/>
+	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="./resources/code/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+
+	<path id="classpath">
+		<fileset dir="${classpath.local.location}" includes="${classpath.local.include}" />
+		<fileset dir="${classpath.libraries.location}" includes="**/*.jar" />
+		<fileset dir="${project.lib}" includes="**/*.jar" />
+	</path>
+
+	<!-- Create the time stamp -->
+	<tstamp> 
+		<format property="date" pattern="MM/dd/yyyy" offset="0" unit="hour"/>
+	</tstamp>
+	
+	<target name="init"> 
+		<echo>${line}
+    Building the Processing library ${project.name} ${library.version}
+${line}
+	src path        ${project.src}
+	bin path        ${project.bin}
+	classpath.local	${classpath.local.location}
+	sketchbook      ${sketchbook.location}
+	java version    ${java.target.version}
+${line}
+	</echo>
+	
+	<mkdir dir="${project.bin}"/>
+	</target>
+	
+	<target name="library.init" depends="init"> 
+		<echo message="init library ..." />	
+	</target>
+
+	<!-- List of things to do
+	__________________________________________________________________________________-->
+	
+	<target name="library.run" depends="library.init"> 
+		<echo message="building library ..." />
+		<antcall target="generate.source" />
+		<antcall target="compile" />
+	  <antcall target="generate.jar" />
+	  <antcall target="generate.javadoc" />
+		<antcall target="generate.libprops" />
+	  <!--<delete dir="${project.tmp}"/>-->
+	</target>
+
+	<!-- Generate source
+	_____________________________________________________________________________________________-->
+	
+	<target name="generate.source" if="is.normal">
+		<antcall target="generate.source.win"/>
+		<antcall target="generate.source.nix"/>
+	</target>
+
+	<!-- Win specific -->
+	<target name="generate.source.win" if="is.windows">
+		<echo message="generating source (windows) ..."/>
+	    <path id="src.contents"><fileset dir="${project.src}" includes="**/*.java" /></path>
+	    <property name="src.list" refid="src.contents" />
+	    <foreach list="${src.list}" param="file" target="parse.file" delimiter=";" />
+	</target>
+	<!-- Other OS -->
+	<target name="generate.source.nix" unless="is.windows">
+		<echo message="generating source (mac/linux) ..."/>
+		<path id="src.contents"><fileset dir="${project.src}" includes="**/*.java" /></path>
+	    <property name="src.list" refid="src.contents" />
+	    <foreach list="${src.list}" param="file" target="parse.file" delimiter=":" />
+	</target>
+
+	<!-- Compile
+	_____________________________________________________________________________________________-->
+
+	<target name="compile">
+		<javac srcdir="${project.src}" destdir="${project.bin}" source="${java.target.version}" target="${java.target.version}" includeantruntime="false">
+			<classpath>
+				<path refid="classpath"/>
+			</classpath>
+			<compilerarg value="-Xlint"/>
+		</javac>
+	</target>
+
+	<!-- Generate JAR
+	_____________________________________________________________________________________________-->
+
+	<target name="generate.jar">
+		<jar jarfile="${project.lib}/${project.jar.name}" basedir="${project.bin}"/>
+	</target>
+
+	<!-- Generate Javadoc
+	_____________________________________________________________________________________________-->
+
+	<target name="generate.javadoc" if="is.normal">
+		<delete dir="${project.docs}"/>
+	  <mkdir dir="${project.docs}" />
+	  <!-- create the java reference of the library -->
+		<javadoc bottom="Processing library ${project.name} by ${author.name}. ${library.copyright}" 
+				classpath="${classpath.local.location}/core.jar;{project.bin}" 
+				destdir="${project.docs}" 
+				verbose="false" 
+				stylesheetfile="resources/stylesheet.css" 
+				doctitle="Javadocs: ${project.name}" 
+				public="true" version="false" 
+				windowtitle="Javadocs: ${project.name}">
+ 			
+ 			<link href="${javadoc.java.href}" />
+			<link href="${javadoc.processing.href}" />
+			<taglet name="ExampleTaglet" path="resources/code" />
+ 			<fileset dir="${project.src}" defaultexcludes="yes">
+				<include name="**/*"/>
+			</fileset>
+	 	</javadoc>
+	</target>
+
+	<!-- Generate library.properties
+	_____________________________________________________________________________________________-->
+
+	<target name="generate.libprops" if="is.normal">
+		<property name="libprops.destination" location="./library.properties"/>
+		<copy file="${libprops.source}" tofile="${libprops.destination}" />
+		<antcall target="parse.file"><param name="file" value="${libprops.destination}"/></antcall>
+	</target>
+
+	<!-- Use placeholder in build.properties
+	_____________________________________________________________________________________________-->
+		
+  <target name="parse.file">
+    <echo message="${file}" />
+    <replaceregexp file="${file}" match="##date##" replace="${date}" flags="g" />
+    <replaceregexp file="${file}" match="##copyright##" replace="${library.copyright}" flags="g" />
+  	<replaceregexp file="${file}" match="##author##" replace="${author.name} ${author.url}" flags="g" />
+  	<replaceregexp file="${file}" match="##author.name##" replace="${author.name}" flags="g" />
+  	<replaceregexp file="${file}" match="##author.url##" replace="${author.url}" flags="g" />
+  	<replaceregexp file="${file}" match="##library.name##" replace="${project.name}" flags="g" />
+  	<replaceregexp file="${file}" match="##project.name##" replace="${project.name}" flags="g" />   
+    <replaceregexp file="${file}" match="##library.version##" replace="${library.version}" flags="g" />
+    <replaceregexp file="${file}" match="##library.prettyVersion##" replace="${library.prettyVersion}" flags="g" /> 
+    <replaceregexp file="${file}" match="##library.url##" replace="${library.url}" flags="g" />
+    <replaceregexp file="${file}" match="##library.category##" replace="${library.category}" flags="g" />
+    <replaceregexp file="${file}" match="##library.sentence##" replace="${library.sentence}" flags="g" />
+  	<replaceregexp file="${file}" match="##library.paragraph##" replace="${library.paragraph}" flags="g" />
+  	<replaceregexp file="${file}" match="##library.keywords##" replace="${library.keywords}" flags="g" />
+    <replaceregexp file="${file}" match="##library.dependencies##" replace="${library.dependencies}" flags="g" />
+  	<replaceregexp file="${file}" match="##source.host##" replace="${source.host}" flags="g" />
+  	<replaceregexp file="${file}" match="##source.url##" replace="${source.url}" flags="g" />
+  	<replaceregexp file="${file}" match="##source.repository##" replace="${source.repository}" flags="g" />
+  	<replaceregexp file="${file}" match="##tested.platform##" replace="${tested.platform}" flags="g" />
+  	<replaceregexp file="${file}" match="##tested.processingVersion##" replace="${tested.processingVersion}" flags="g" />
+  </target>
+
+  <!-- Clean up after yourself!
+	_____________________________________________________________________________________________-->
+
+	<target name="clean" depends="library.run">
+		<delete dir="${project.bin}"/>
+		<echo>
+		
+${line}
+Name        ${project.name} 
+Version     ${library.prettyVersion} (${library.version})
+Compiled    ${project.compile}
+Sketchbook  ${sketchbook.location}
+${line}
+done, finished.
+${line}
+		</echo>
+	</target>
+	
+</project>
+

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/8795/trunk/library-template/resources/code
+END
+ExampleTaglet.class
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/!svn/ver/8795/trunk/library-template/resources/code/ExampleTaglet.class
+END
+ExampleTaglet.java
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/!svn/ver/8795/trunk/library-template/resources/code/ExampleTaglet.java
+END
+ant-contrib-1.0b3.jar
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/8795/trunk/library-template/resources/code/ant-contrib-1.0b3.jar
+END
+doc.sh
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/8795/trunk/library-template/resources/code/doc.sh
+END
