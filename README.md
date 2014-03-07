@@ -1,7 +1,7 @@
 Introduction
 ------------
 
-HTTProcessing is a small library that takes the pain out of doing HTTP requests in Processing. To download the library for use in your Processing sketch, download [httprocessing.zip](https://github.com/downloads/runemadsen/HTTProcessing/httprocessing.zip).
+HTTProcessing is a small library that takes the pain out of doing HTTP requests in Processing. To download the library for use in your Processing sketch, download [httprocessing.zip](../../archive/master.zip).
 
 HTTProcessing is based on code by [Chris Allick](http://chrisallick.com/) and [Daniel Shiffman](http://www.shiffman.net/).
 
