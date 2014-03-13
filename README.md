@@ -1,9 +1,9 @@
 Introduction
 ------------
 
-HTTProcessing is a small library that takes the pain out of doing HTTP requests in Processing. To download the library for use in your Processing sketch, download [httprocessing.zip](https://github.com/downloads/runemadsen/HTTProcessing/httprocessing.zip).
+HTTP Requests for Processing is a small library that takes the pain out of doing HTTP requests in Processing. 
 
-HTTProcessing is based on code by [Chris Allick](http://chrisallick.com/) and [Daniel Shiffman](http://www.shiffman.net/).
+HTTP Requests for Processing is based on code by [Chris Allick](http://chrisallick.com/) and [Daniel Shiffman](http://www.shiffman.net/).
 
 
 Installation
@@ -13,7 +13,7 @@ Simply clone this git repository into your Processing "libraries" folder, or use
 
 Then import the library in your sketch:
     
-    import httprocessing.*;
+    import http.requests.*;
 
 Then you can make GET and POST requests from your code:
 
