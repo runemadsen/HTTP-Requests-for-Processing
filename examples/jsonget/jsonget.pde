@@ -1,4 +1,4 @@
-import httprocessing.*;
+import http.requests.*;
 
 public void setup() 
 {
@@ -9,7 +9,7 @@ public void setup()
   get.send(); // program will wait untill the request is completed
   println("response: " + get.getContent());
 
-  JSONObject response = JSONObject.parse(get.getContent());
+  JSONObject response = parseJSONObject(get.getContent());
   println("status: " + response.getString("status"));
   JSONArray boxes = response.getJSONArray("data");
   println("boxes: ");
