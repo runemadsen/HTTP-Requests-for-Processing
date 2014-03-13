@@ -37,5 +37,3 @@ If you want to build the library (with javadocs, etc), run this from the git roo
     ant
 
 That will generate the necessary JAR file into "libraries".
-
-(quickly testing if i'm a collaborator here)
