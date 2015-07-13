@@ -26,11 +26,18 @@ public class PostRequest
 	HashMap<String,File> nameFilePairs;
 
 	String content;
+	String encoding;
 	HttpResponse response;
 
-	public PostRequest(String url) 
+	public PostRequest(String url)
+	{
+	  this(url, "ISO-8859-1");
+	}
+	
+	public PostRequest(String url, String encoding) 
 	{
 		this.url = url;
+		this.encoding = encoding;
 		nameValuePairs = new ArrayList<BasicNameValuePair>();
 		nameFilePairs = new HashMap<String,File>();
 	}
@@ -57,7 +64,7 @@ public class PostRequest
 			HttpPost httpPost = new HttpPost(url);
 
 			if (nameFilePairs.isEmpty()) {
-				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, encoding));
 			} else {
 				MultipartEntity mentity = new MultipartEntity();	
 				Iterator<Entry<String,File>> it = nameFilePairs.entrySet().iterator();
