@@ -1,3 +1,4 @@
 distribution
 .DS_Store
 *.class
+/bin/
