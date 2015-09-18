@@ -26,6 +26,8 @@ public class PostRequest
 	String url;
 	ArrayList<BasicNameValuePair> nameValuePairs;
 	HashMap<String,File> nameFilePairs;
+    	ArrayList<BasicNameValuePair> headerPairs;
+
 
 	String content;
 	String encoding;
@@ -49,6 +51,12 @@ public class PostRequest
 	{
 		creds = new UsernamePasswordCredentials(user, pwd);
 	}
+    
+    	public void addHeader(String key,String value) {
+        	BasicNameValuePair nvp = new BasicNameValuePair(key,value);
+        	headerPairs.add(nvp);
+        
+    	} 
 
 	public void addData(String key, String value) 
 	{
@@ -91,6 +99,12 @@ public class PostRequest
 				}
 				httpPost.setEntity(mentity);
 			}
+
+                    	Iterator<BasicNameValuePair> headerIterator = headerPairs.iterator();
+                    	while (headerIterator.hasNext()) {
+                      		BasicNameValuePair headerPair = headerIterator.next();
+                      		httpPost.addHeader(headerPair.getName(),headerPair.getValue());
+                    	}
 
 			response = httpClient.execute( httpPost );
 			HttpEntity   entity   = response.getEntity();
