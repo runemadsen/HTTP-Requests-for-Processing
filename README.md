@@ -28,6 +28,7 @@ Then you can make GET and POST requests from your code:
     println("Reponse Content-Length Header: " + post.getHeader("Content-Length"));
 
 To authenticate requests using a Basic Access authentication scheme, include the following in your requests:
+    
     get.addUser("username", "password");
 
     post.addUser("username", "password");
