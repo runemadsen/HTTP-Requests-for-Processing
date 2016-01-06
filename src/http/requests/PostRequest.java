@@ -45,6 +45,7 @@ public class PostRequest
 		this.encoding = encoding;
 		nameValuePairs = new ArrayList<BasicNameValuePair>();
 		nameFilePairs = new HashMap<String,File>();
+		this.headerPairs = new ArrayList<BasicNameValuePair>();
 	}
 
 	public void addUser(String user, String pwd) 
@@ -117,6 +118,7 @@ public class PostRequest
 			// Clear it out for the next time
 			nameValuePairs.clear();
 			nameFilePairs.clear();
+			headerPairs.clear();
 
 		} catch( Exception e ) { 
 			e.printStackTrace(); 
