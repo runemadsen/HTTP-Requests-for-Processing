@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -25,6 +26,7 @@ public class PostRequest
 {
 	String url;
 	ArrayList<BasicNameValuePair> nameValuePairs;
+	StringEntity stringEntity;
 	HashMap<String,File> nameFilePairs;
     	ArrayList<BasicNameValuePair> headerPairs;
 
@@ -64,6 +66,16 @@ public class PostRequest
 		BasicNameValuePair nvp = new BasicNameValuePair(key,value);
 		nameValuePairs.add(nvp);
 	}
+
+   // overloads addData so you can add a JSON string:
+  public void addData(String json) 
+  {
+    try{
+    stringEntity = new StringEntity(json);
+    } catch( Exception e ) { 
+      e.printStackTrace(); 
+    }
+  }
 
 	public void addFile(String name, File f) {
 		nameFilePairs.put(name,f);
