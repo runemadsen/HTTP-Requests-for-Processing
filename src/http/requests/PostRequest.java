@@ -113,6 +113,10 @@ public class PostRequest
 				httpPost.setEntity(mentity);
 			}
 
+			if (stringEntity != null) {
+        		httpPut.setEntity(stringEntity);
+      	}
+
                     	Iterator<BasicNameValuePair> headerIterator = headerPairs.iterator();
                     	while (headerIterator.hasNext()) {
                       		BasicNameValuePair headerPair = headerIterator.next();
