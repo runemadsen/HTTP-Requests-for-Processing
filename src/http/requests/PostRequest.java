@@ -114,7 +114,7 @@ public class PostRequest
 			}
 
 			if (stringEntity != null) {
-        		httpPut.setEntity(stringEntity);
+        		httpPost.setEntity(stringEntity);
       	}
 
                     	Iterator<BasicNameValuePair> headerIterator = headerPairs.iterator();
