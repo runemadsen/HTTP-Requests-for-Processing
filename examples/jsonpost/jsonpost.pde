@@ -6,7 +6,7 @@ public void setup()
   smooth();
 
   PostRequest post = new PostRequest("http://httprocessing.heroku.com");
-  put.addHeader("Content-Type", "application/json");
+  post.addHeader("Content-Type", "application/json");
   post.addData("{\"on\":false}");
   post.send();
   System.out.println("Reponse Content: " + post.getContent());
