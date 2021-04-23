@@ -71,7 +71,7 @@ public class PostRequest
   public void addData(String json) 
   {
     try{
-    stringEntity = new StringEntity(json);
+    stringEntity = new StringEntity(json, encoding);
     } catch( Exception e ) { 
       e.printStackTrace(); 
     }
