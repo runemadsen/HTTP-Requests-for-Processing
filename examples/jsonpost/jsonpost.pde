@@ -1,10 +1,7 @@
 import http.requests.*;
 
-public void setup()
-{
+public void setup() {
   size(400, 400);
-  smooth();
-
   PostRequest post = new PostRequest("http://dummy.restapiexample.com/api/v1/create");
   post.addHeader("Content-Type", "application/json");
   post.addData("{\"name\":\"Daniel Shiffman\",\"salary\":\"123\",\"age\":\"23\"}");
